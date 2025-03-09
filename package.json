@@ -6,12 +6,17 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "test:e2e": "playwright test",
+    "test:e2e:ui": "playwright test --ui",
+    "test:e2e:debug": "playwright test --debug"
   },
   "dependencies": {
     "pixi.js": "^7.4.0"
   },
   "devDependencies": {
+    "@playwright/test": "^1.51.0",
+    "@types/node": "^22.13.10",
     "typescript": "^5.2.2",
     "vite": "^5.1.4"
   }
