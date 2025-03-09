@@ -1,5 +1,5 @@
 import * as PIXI from 'pixi.js';
-import type { BoardState, CellState, GameConfig, Player, Position } from '../types';
+import type { BoardState, CellState, GameConfig, Player, Position, WinInfo } from '../types';
 
 export class Board extends PIXI.Container {
     private board: BoardState;
@@ -77,17 +77,16 @@ export class Board extends PIXI.Container {
                this.board[pos.y][pos.x] === null;
     }
 
-    public placeStone(pos: Position, player: Player): boolean {
+    public placeStone(pos: Position, player: Player): PIXI.Graphics | false {
         if (!this.isValidPosition(pos)) {
             return false;
         }
 
         this.board[pos.y][pos.x] = player;
-        this.drawStone(pos, player);
-        return true;
+        return this.drawStone(pos, player);
     }
 
-    private drawStone(pos: Position, player: Player): void {
+    private drawStone(pos: Position, player: Player): PIXI.Graphics {
         const stone = new PIXI.Graphics();
         const { cellSize, blackStoneColor, whiteStoneColor } = this.config;
         const radius = cellSize * 0.4;
@@ -100,9 +99,10 @@ export class Board extends PIXI.Container {
         stone.y = (pos.y + 0.5) * cellSize;
 
         this.stones.addChild(stone);
+        return stone;
     }
 
-    public checkWin(lastMove: Position): Player | null {
+    public checkWin(lastMove: Position): WinInfo | null {
         const directions = [
             [[0, 1], [0, -1]],   // vertical
             [[1, 0], [-1, 0]],   // horizontal
@@ -115,16 +115,46 @@ export class Board extends PIXI.Container {
 
         for (const [dir1, dir2] of directions) {
             let count = 1;
-            count += this.countStones(lastMove, dir1, player);
-            count += this.countStones(lastMove, dir2, player);
+            const line = {
+                start: { ...lastMove },
+                end: { ...lastMove }
+            };
 
-            if (count >= 5) return player;
+            // 计算一个方向的连续棋子
+            let stones1 = this.countStonesWithEnd(lastMove, dir1, player, line.end);
+            // 计算相反方向的连续棋子
+            let stones2 = this.countStonesWithEnd(lastMove, dir2, player, line.start);
+            
+            count += stones1 + stones2;
+
+            if (count >= 5) {
+                // 调整起点和终点的位置到棋盘格子中心
+                const { cellSize } = this.config;
+                return {
+                    player,
+                    line: {
+                        start: {
+                            x: (line.start.x + 0.5) * cellSize,
+                            y: (line.start.y + 0.5) * cellSize
+                        },
+                        end: {
+                            x: (line.end.x + 0.5) * cellSize,
+                            y: (line.end.y + 0.5) * cellSize
+                        }
+                    }
+                };
+            }
         }
 
         return null;
     }
 
-    private countStones(start: Position, direction: number[], player: Player): number {
+    private countStonesWithEnd(
+        start: Position,
+        direction: number[],
+        player: Player,
+        endPos: Position
+    ): number {
         let count = 0;
         let x = start.x + direction[0];
         let y = start.y + direction[1];
@@ -135,6 +165,8 @@ export class Board extends PIXI.Container {
             this.board[y][x] === player
         ) {
             count++;
+            endPos.x = x;
+            endPos.y = y;
             x += direction[0];
             y += direction[1];
         }
