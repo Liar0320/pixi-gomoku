@@ -7,44 +7,62 @@
     <style>
       body {
         margin: 0;
+        padding: 20px;
         display: flex;
-        justify-content: center;
+        flex-direction: column;
         align-items: center;
-        min-height: 100vh;
         background-color: #f0f0f0;
         font-family: Arial, sans-serif;
       }
 
       #app {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        gap: 20px;
-      }
-
-      #game-container {
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        border-radius: 4px;
-        overflow: hidden;
+        background-color: white;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
       }
 
       button {
-        padding: 10px 20px;
-        font-size: 16px;
-        background-color: #4CAF50;
-        color: white;
+        padding: 8px 16px;
         border: none;
         border-radius: 4px;
+        background-color: #4CAF50;
+        color: white;
         cursor: pointer;
+        font-size: 14px;
         transition: background-color 0.3s;
       }
 
       button:hover {
         background-color: #45a049;
       }
+
+      select {
+        padding: 8px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        font-size: 14px;
+        background-color: white;
+      }
+
+      /* 预加载音频资源 */
+      .preload-audio {
+        display: none;
+      }
     </style>
   </head>
   <body>
+    <!-- 预加载音频资源 -->
+    <audio class="preload-audio" preload="auto">
+      <source src="/stone-place.mp3" type="audio/mpeg">
+    </audio>
+    <audio class="preload-audio" preload="auto">
+      <source src="/win.mp3" type="audio/mpeg">
+    </audio>
+    <audio class="preload-audio" preload="auto">
+      <source src="/background.mp3" type="audio/mpeg">
+    </audio>
+
     <div id="app">
       <h1>五子棋</h1>
       <div id="game-container"></div>
