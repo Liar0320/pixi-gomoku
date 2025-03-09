@@ -28,6 +28,11 @@
    - 优化 AI 算法，提高其下棋水平。
 ```
 
+使用的工具：
+- mcp__sequentialthinking：分析和规划实现步骤
+- run_terminal_cmd：创建项目和安装依赖
+- edit_file：创建和编辑项目文件
+
 ## 对话 2：创建项目文档
 
 用户要求：
@@ -76,6 +81,10 @@
     - 提供作者的联系方式。
 ```
 
+使用的工具：
+- edit_file：创建和编辑 README.md 文件
+- edit_file：创建 LICENSE 文件
+
 ## 对话 3：版本控制初始化
 
 用户要求：
@@ -83,9 +92,37 @@
 帮忙初始化git仓库，并且建立一次提交
 ```
 
+使用的工具：
+- run_terminal_cmd：初始化 git 仓库
+- edit_file：创建 .gitignore 文件
+- run_terminal_cmd：添加文件和创建提交
+
 ## 对话 4：保存对话记录
 
 用户要求：
 ```
-将我的提问保存到当前工作区中，以一个文件夹存储
-``` 
+记录我们的对话过程， 但是不包含你的实现的内容
+```
+
+使用的工具：
+- edit_file：创建和编辑对话记录文档
+- run_terminal_cmd：将文档添加到版本控制
+
+## 工具使用统计
+
+在项目开发过程中，我们主要使用了以下 MCP 工具：
+
+1. **核心工具**：
+   - edit_file：用于创建和编辑项目文件
+   - run_terminal_cmd：执行命令行操作
+   - mcp__sequentialthinking：分析问题和规划实现步骤
+
+2. **使用频率**：
+   - edit_file：使用最频繁，用于代码实现和文档编写
+   - run_terminal_cmd：主要用于项目初始化和版本控制
+   - mcp__sequentialthinking：用于复杂问题的分析和规划
+
+3. **工具组合**：
+   - 项目初始化：run_terminal_cmd + edit_file
+   - 代码实现：mcp__sequentialthinking + edit_file
+   - 文档管理：edit_file + run_terminal_cmd 
